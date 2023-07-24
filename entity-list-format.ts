@@ -1,4 +1,4 @@
-declare namespace EntityListFormat {
+ module EntityListFormat {
     export interface Entity {
         name: string;
         id: string;
@@ -7,3 +7,5 @@ declare namespace EntityListFormat {
         entities: Entity[];
     }
 }
+
+export default EntityListFormat;

@@ -36,21 +36,29 @@ app.get('/', (req, res) => {
     else {
         res.json({ gender: `Hello ${name}!`, count: 22, data: { name: 'test', age: 22 } });
     }
-    //res.send('Express + TypeScript Server22');
 });
 app.get('/entities', (req, res) => {
     const entities = getAllEntities();
     res.header("Access-Control-Allow-Origin", "*");
     res.json(entities);
 });
-app.get('/entities/search', (req, res) => {
-    console.log(req.query);
-    const searchCriteria = req.query.searchCriteria;
-    console.log(searchCriteria);
-    const entities = searchEntities(searchCriteria);
-    console.log(entities);
+// Look up an entity by id
+app.get('/entity/:entityId', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.json(entities);
+    const entity = lookupEntity(req.params.entityId);
+    if (typeof entity === 'undefined') {
+        res.status(404);
+        res.send();
+    }
+    else {
+        res.json(entity);
+    }
+});
+// Search for an entity by name
+app.get('/entities/search', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    const searchCriteria = req.query.searchCriteria;
+    res.json(searchEntities(searchCriteria));
 });
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
@@ -61,6 +69,9 @@ function getAllEntities() {
 }
 function searchEntities(searchCriteria) {
     const entities = getAllEntities();
-    const filteredEntities = entities.filter(entity => entity.name.toUpperCase().includes(searchCriteria.toUpperCase()));
-    return filteredEntities;
+    return entities.filter(entity => entity.name.toUpperCase().includes(searchCriteria.toUpperCase()));
+}
+function lookupEntity(entityId) {
+    const entities = getAllEntities();
+    return entities.find(entity => entity.id == entityId);
 }

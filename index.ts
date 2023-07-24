@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import expressWinston from 'express-winston';
 import winston from 'winston';
 import entitiyDataFeed from './entity-list.json';
-import entityListFormat from './entity-list-format';
+import EntityListFormat from './entity-list-format';
 import { get } from 'http';
 
 dotenv.config();
@@ -43,29 +43,35 @@ app.get('/', (req: Request, res: Response) => {
   }else{
     res.json({ gender: `Hello ${name}!`, count:22, data: {name: 'test', age: 22} });
   }
-  
-  
-  //res.send('Express + TypeScript Server22');
 });
 app.get('/entities', (req: Request, res: Response) => {
   const entities = getAllEntities();
   res.header("Access-Control-Allow-Origin", "*");
   res.json(entities);
 });
-app.get('/entities/search', (req: Request, res: Response) => {
-  console.log(req.query);
-  const searchCriteria = req.query.searchCriteria;
-  console.log(searchCriteria);
-  const entities = searchEntities(searchCriteria as string);
-  console.log(entities);
+
+// Look up an entity by id
+app.get('/entity/:entityId', (req: Request, res: Response) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.json(entities);
+  const entity = lookupEntity(req.params.entityId);
+  if(typeof entity === 'undefined'){
+    res.status(404);
+    res.send();
+  }else{
+    res.json(entity);
+  }
+});
+
+// Search for an entity by name
+app.get('/entities/search', (req: Request, res: Response) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const searchCriteria = req.query.searchCriteria;
+  res.json(searchEntities(searchCriteria as string));
 });
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-
 
 function getAllEntities():EntityListFormat.Entity[] {
   const entityListFeed = entitiyDataFeed as EntityListFormat.EntityList;
@@ -74,7 +80,10 @@ function getAllEntities():EntityListFormat.Entity[] {
 
 function searchEntities ( searchCriteria:string):EntityListFormat.Entity[]  {
   const entities = getAllEntities();
-  const filteredEntities = entities.filter(entity => entity.name.toUpperCase().includes(searchCriteria.toUpperCase()));
-  return filteredEntities;
+  return entities.filter(entity => entity.name.toUpperCase().includes(searchCriteria.toUpperCase()));
 }
 
+function lookupEntity(entityId:string):EntityListFormat.Entity | undefined {
+  const entities = getAllEntities();
+  return entities.find(entity => entity.id == entityId);
+}
