@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_winston_1 = __importDefault(require("express-winston"));
 const winston_1 = __importDefault(require("winston"));
+const entity_list_json_1 = __importDefault(require("./entity-list.json"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -37,6 +38,29 @@ app.get('/', (req, res) => {
     }
     //res.send('Express + TypeScript Server22');
 });
+app.get('/entities', (req, res) => {
+    const entities = getAllEntities();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.json(entities);
+});
+app.get('/entities/search', (req, res) => {
+    console.log(req.query);
+    const searchCriteria = req.query.searchCriteria;
+    console.log(searchCriteria);
+    const entities = searchEntities(searchCriteria);
+    console.log(entities);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.json(entities);
+});
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+function getAllEntities() {
+    const entityListFeed = entity_list_json_1.default;
+    return entityListFeed.entities;
+}
+function searchEntities(searchCriteria) {
+    const entities = getAllEntities();
+    const filteredEntities = entities.filter(entity => entity.name.toUpperCase().includes(searchCriteria.toUpperCase()));
+    return filteredEntities;
+}

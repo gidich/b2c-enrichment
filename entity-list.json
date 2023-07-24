@@ -1,0 +1,64 @@
+{
+    "entities": [
+        {
+          "name": "Harvard Medical School",
+          "id": "00e0t000000DnZPAA1"
+        },
+        {
+          "name": "Johns Hopkins University School of Medicine",
+          "id": "00e0t000000DnZPAA2"
+        },
+        {
+          "name": "Stanford University School of Medicine",
+          "id": "00e0t000000DnZPAA3"
+        },
+        {
+          "name": "Columbia University Vagelos College of Physicians and Surgeons",
+          "id": "00e0t000000DnZPAA4"
+        },
+        {
+          "name": "Perelman School of Medicine at the University of Pennsylvania",
+          "id": "00e0t000000DnZPAA5"
+        },
+        {
+          "name": "Yale School of Medicine",
+          "id": "00e0t000000DnZPAA6"
+        },
+        {
+          "name": "Duke University School of Medicine",
+          "id": "00e0t000000DnZPAA7"
+        },
+        {
+          "name": "University of Washington School of Medicine",
+          "id": "00e0t000000DnZPAA8"
+        },
+        {
+          "name": "University of California, San Francisco School of Medicine",
+          "id": "00e0t000000DnZPAA9"
+        },
+        {
+          "name": "Mayo Clinic Alix School of Medicine",
+          "id": "00e0t000000DnZPAAY"
+        },
+        {
+          "name": "University of Pittsburgh School of Medicine",
+          "id": "00e0t000000DnZPAAX"
+        },
+        {
+          "name": "University of Michigan Medical School",
+          "id": "00e0t000000DnZPAAY"
+        },
+        {
+          "name": "University of Chicago Pritzker School of Medicine",
+          "id": "00e0t000000DnZPAAZ"
+        },
+        {
+          "name": "Washington University School of Medicine in St. Louis",
+          "id": "00e0t000000DnZPAAA"
+        },
+        {
+          "name": "\r\nUniversity of Miami Leonard M. Miller School of Medicine",
+          "id":"00e0t000000DnZPAAB"
+         }
+      ]      
+}

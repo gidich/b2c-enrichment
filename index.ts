@@ -2,6 +2,9 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import expressWinston from 'express-winston';
 import winston from 'winston';
+import entitiyDataFeed from './entity-list.json';
+import entityListFormat from './entity-list-format';
+import { get } from 'http';
 
 dotenv.config();
 
@@ -44,7 +47,34 @@ app.get('/', (req: Request, res: Response) => {
   
   //res.send('Express + TypeScript Server22');
 });
+app.get('/entities', (req: Request, res: Response) => {
+  const entities = getAllEntities();
+  res.header("Access-Control-Allow-Origin", "*");
+  res.json(entities);
+});
+app.get('/entities/search', (req: Request, res: Response) => {
+  console.log(req.query);
+  const searchCriteria = req.query.searchCriteria;
+  console.log(searchCriteria);
+  const entities = searchEntities(searchCriteria as string);
+  console.log(entities);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.json(entities);
+});
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+
+
+function getAllEntities():EntityListFormat.Entity[] {
+  const entityListFeed = entitiyDataFeed as EntityListFormat.EntityList;
+  return entityListFeed.entities;
+}
+
+function searchEntities ( searchCriteria:string):EntityListFormat.Entity[]  {
+  const entities = getAllEntities();
+  const filteredEntities = entities.filter(entity => entity.name.toUpperCase().includes(searchCriteria.toUpperCase()));
+  return filteredEntities;
+}
+
